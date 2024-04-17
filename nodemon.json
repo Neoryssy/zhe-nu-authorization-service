@@ -1,3 +1,8 @@
 {
-  "ignore": ["dist"]
+  "env": {
+    "NODE_ENV": "development",
+    "PORT": 3000
+  },
+  "ignore": ["node_modules", "dist"],
+  "watch": ["src"]
 }
