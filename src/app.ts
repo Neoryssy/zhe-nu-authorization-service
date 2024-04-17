@@ -1,6 +1,6 @@
-var express = require('express');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
 
 var app = express();
 
