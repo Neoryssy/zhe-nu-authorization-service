@@ -1,16 +1,18 @@
-import express from 'express';
-import cookieParser from 'cookie-parser';
-import logger from 'morgan';
+import 'dotenv/config'
 
-var app = express();
+import express from 'express'
+import cookieParser from 'cookie-parser'
+import logger from 'morgan'
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+var app = express()
 
-const PORT = process.env.PORT || 3000;
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
+
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  console.log(`Server running on port ${PORT}`)
+})
