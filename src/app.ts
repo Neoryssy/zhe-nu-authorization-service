@@ -1,4 +1,7 @@
 import 'dotenv/config'
+import { validateEnvVariables } from './utils/validateEnvVariables'
+
+validateEnvVariables()
 
 import express from 'express'
 import cookieParser from 'cookie-parser'
