@@ -1,10 +1,10 @@
-import { randomBytes, scrypt, timingSafeEqual } from 'crypto'
+import { randomBytes, scrypt, timingSafeEqual } from 'crypto';
 
 export class PasswordUtils {
-  static KEY_LENGTH = 64
+  static KEY_LENGTH = 64;
 
   static generateSalt(length: number) {
-    return randomBytes(length).toString('hex')
+    return randomBytes(length).toString('hex');
   }
 
   /**
@@ -15,11 +15,11 @@ export class PasswordUtils {
   static generateHash(password: string, salt: string): Promise<string> {
     return new Promise((resolve, reject) => {
       scrypt(password, salt, this.KEY_LENGTH, (err, derivedKey) => {
-        if (err) reject(err)
+        if (err) reject(err);
 
-        resolve(derivedKey.toString('hex'))
-      })
-    })
+        resolve(derivedKey.toString('hex'));
+      });
+    });
   }
 
   /**
@@ -35,13 +35,13 @@ export class PasswordUtils {
     salt: string
   ): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      const hashKeyBuff = Buffer.from(hash, 'hex')
+      const hashKeyBuff = Buffer.from(hash, 'hex');
 
       scrypt(password, salt, this.KEY_LENGTH, (err, derivedKey) => {
-        if (err) reject(err)
+        if (err) reject(err);
 
-        resolve(timingSafeEqual(hashKeyBuff, derivedKey))
-      })
-    })
+        resolve(timingSafeEqual(hashKeyBuff, derivedKey));
+      });
+    });
   }
 }

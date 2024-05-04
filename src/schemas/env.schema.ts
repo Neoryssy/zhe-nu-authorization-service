@@ -1,4 +1,4 @@
-import Joi from 'joi'
+import Joi from 'joi';
 
 const alghorithms = [
   'HS256',
@@ -13,7 +13,7 @@ const alghorithms = [
   'PS256',
   'PS384',
   'PS512',
-]
+];
 
 export const envSchema = Joi.object()
   .keys({
@@ -28,4 +28,4 @@ export const envSchema = Joi.object()
     MONGODB_URI: Joi.string().required().uri(),
     SALT_LENGTH: Joi.number().required().integer().min(4).max(64),
   })
-  .unknown()
+  .unknown();
