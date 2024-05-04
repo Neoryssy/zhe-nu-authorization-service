@@ -3,6 +3,11 @@ import { User } from '../models/User.model';
 import jwt, { Algorithm } from 'jsonwebtoken';
 import { PasswordUtils } from '../utils/PasswordUtils';
 
+const ALGORITHM = process.env.ALGORITHM as Algorithm;
+const JWT_SECRET = process.env.JWT_SECRET!;
+const SALT_LENGTH = Number(process.env.SALT_LENGTH);
+const SECRET_KEY = process.env.JWT_SECRET!;
+
 export class UserController {
   static login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
@@ -15,19 +20,17 @@ export class UserController {
         });
       }
 
-      const valid = await PasswordUtils.comparePassword(
+      const isPasswordValid = await PasswordUtils.comparePassword(
         password,
         user.passwordHash,
         user.passwordSalt
       );
-      if (!valid) {
+
+      if (!isPasswordValid) {
         return res.status(400).send({
           message: 'Invalid email or password',
         });
       }
-
-      const ALGORITHM = process.env.ALGORITHM as Algorithm;
-      const JWT_SECRET = process.env.JWT_SECRET!;
 
       const payload = {
         sub: user._id,
@@ -67,7 +70,6 @@ export class UserController {
         });
       }
 
-      const SALT_LENGTH = Number(process.env.SALT_LENGTH);
       const passwordSalt = PasswordUtils.generateSalt(SALT_LENGTH);
       const passwordHash = await PasswordUtils.generateHash(
         password,
@@ -82,8 +84,7 @@ export class UserController {
 
       await user.save();
 
-      const ALGORITHM = process.env.ALGORITHM as Algorithm;
-      const SECRET_KEY = process.env.JWT_SECRET!;
+
       const payload = {
         sub: user._id,
       };
