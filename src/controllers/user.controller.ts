@@ -26,10 +26,8 @@ export class UserController {
         });
       }
 
-      const ALGORITHM = (process.env.ALGORITHM || 'HS256') as Algorithm;
-      const JWT_SECRET = process.env.JWT_SECRET;
-
-      if (!JWT_SECRET) throw new Error('JWT_SECRET is not defined');
+      const ALGORITHM = process.env.ALGORITHM as Algorithm;
+      const JWT_SECRET = process.env.JWT_SECRET!;
 
       const payload = {
         sub: user._id,
@@ -69,7 +67,7 @@ export class UserController {
         });
       }
 
-      const SALT_LENGTH = Number(process.env.SALT_LENGTH) || 16;
+      const SALT_LENGTH = Number(process.env.SALT_LENGTH);
       const passwordSalt = PasswordUtils.generateSalt(SALT_LENGTH);
       const passwordHash = await PasswordUtils.generateHash(
         password,
@@ -84,8 +82,8 @@ export class UserController {
 
       await user.save();
 
-      const ALGORITHM = (process.env.ALGORITHM || 'HS256') as Algorithm;
-      const SECRET_KEY = process.env.JWT_SECRET || 'secret';
+      const ALGORITHM = process.env.ALGORITHM as Algorithm;
+      const SECRET_KEY = process.env.JWT_SECRET!;
       const payload = {
         sub: user._id,
       };
