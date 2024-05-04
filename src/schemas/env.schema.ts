@@ -18,14 +18,14 @@ const alghorithms = [
 export const envSchema = Joi.object()
   .keys({
     ALGORITHM: Joi.string()
-      .required()
       .uppercase()
-      .valid(...alghorithms),
+      .valid(...alghorithms)
+      .default('HS256'),
     JWT_EXPIRES_IN: Joi.string()
-      .required()
-      .pattern(/^[0-9]+[smhdw]$/),
-    JWT_SECRET: Joi.string().required(),
+      .pattern(/^[0-9]+[smhdw]$/)
+      .default('1h'),
+    JWT_SECRET: Joi.string().required().min(16).max(64),
     MONGODB_URI: Joi.string().required().uri(),
-    SALT_LENGTH: Joi.number().required().integer().min(4).max(64),
+    SALT_LENGTH: Joi.number().integer().min(4).max(64).default(16),
   })
   .unknown();
