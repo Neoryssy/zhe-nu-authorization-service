@@ -7,17 +7,6 @@ export class UserController {
   static login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    if (!email) {
-      return res.status(400).send({
-        message: 'Email is required',
-      });
-    }
-    if (!password) {
-      return res.status(400).send({
-        message: 'Password is required',
-      });
-    }
-
     try {
       const user = await User.findOne({ email });
       if (!user) {
@@ -71,17 +60,6 @@ export class UserController {
 
   static register = async (req: Request, res: Response) => {
     const { email, password } = req.body;
-
-    if (!email) {
-      return res.status(400).send({
-        message: 'Email is required',
-      });
-    }
-    if (!password) {
-      return res.status(400).send({
-        message: 'Password is required',
-      });
-    }
 
     try {
       const userExists = await User.findOne({ email });
