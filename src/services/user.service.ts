@@ -3,23 +3,29 @@ import { PasswordUtils } from '../utils/PasswordUtils';
 
 export class UserService {
   static async login(email: string, password: string) {
-    const user = await User.findOne({ email });
+    try {
+      const user = await User.findOne({ email });
 
-    if (!user) {
+      if (!user) {
+        return null;
+      }
+
+      const isPasswordValid = await PasswordUtils.comparePassword(
+        password,
+        user.passwordHash,
+        user.passwordSalt
+      );
+
+      if (!isPasswordValid) {
+        return null;
+      }
+
+      return user;
+    } catch (error) {
+      console.log(error);
+
       return null;
     }
-
-    const isPasswordValid = await PasswordUtils.comparePassword(
-      password,
-      user.passwordHash,
-      user.passwordSalt
-    );
-
-    if (!isPasswordValid) {
-      return null;
-    }
-
-    return user;
   }
 
   static async register(email: string, password: string) {
