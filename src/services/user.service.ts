@@ -54,7 +54,7 @@ export class UserService {
     }
   }
 
-  static async userExists(email: string) {
+  static async emailExists(email: string) {
     const user = await User.findOne({ email });
     return !!user;
   }

@@ -52,14 +52,6 @@ export class UserController {
     const { email, password } = req.body;
 
     try {
-      const userExists = await UserService.userExists(email);
-
-      if (userExists) {
-        return res.status(400).send({
-          message: 'User already exists',
-        });
-      }
-
       const user = await UserService.register(email, password);
 
       if (!user) {
