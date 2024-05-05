@@ -2,10 +2,10 @@ import { Request, Response } from 'express';
 import { User } from '../models/User.model';
 import jwt, { Algorithm } from 'jsonwebtoken';
 import { PasswordUtils } from '../utils/PasswordUtils';
+import { UserService } from '../services/user.service';
 
 const ALGORITHM = process.env.ALGORITHM as Algorithm;
 const JWT_SECRET = process.env.JWT_SECRET!;
-const SALT_LENGTH = Number(process.env.SALT_LENGTH);
 const SECRET_KEY = process.env.JWT_SECRET!;
 
 export class UserController {
@@ -13,20 +13,9 @@ export class UserController {
     const { email, password } = req.body;
 
     try {
-      const user = await User.findOne({ email });
+      const user = await UserService.login(email, password);
+
       if (!user) {
-        return res.status(400).send({
-          message: 'Invalid email or password',
-        });
-      }
-
-      const isPasswordValid = await PasswordUtils.comparePassword(
-        password,
-        user.passwordHash,
-        user.passwordSalt
-      );
-
-      if (!isPasswordValid) {
         return res.status(400).send({
           message: 'Invalid email or password',
         });
@@ -63,27 +52,21 @@ export class UserController {
     const { email, password } = req.body;
 
     try {
-      const userExists = await User.findOne({ email });
+      const userExists = await UserService.userExists(email);
+
       if (userExists) {
-        return res.status(409).send({
+        return res.status(400).send({
           message: 'User already exists',
         });
       }
 
-      const passwordSalt = PasswordUtils.generateSalt(SALT_LENGTH);
-      const passwordHash = await PasswordUtils.generateHash(
-        password,
-        passwordSalt
-      );
+      const user = await UserService.register(email, password);
 
-      const user = new User({
-        email,
-        passwordHash,
-        passwordSalt,
-      });
-
-      await user.save();
-
+      if (!user) {
+        return res.status(500).send({
+          message: 'Internal server error',
+        });
+      }
 
       const payload = {
         sub: user._id,
