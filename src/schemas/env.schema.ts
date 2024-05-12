@@ -21,10 +21,14 @@ export const envSchema = Joi.object()
       .uppercase()
       .valid(...alghorithms)
       .default('HS256'),
-    JWT_EXPIRES_IN: Joi.string()
+    JWT_ACCESS_EXPIRES_IN: Joi.string()
       .pattern(/^[0-9]+[smhdw]$/)
-      .default('1h'),
-    JWT_SECRET: Joi.string().required().min(16).max(64),
+      .default('10m'),
+    JWT_ACCESS_SECRET: Joi.string().required().min(16).max(64),
+    JWT_REFRESH_EXPIRES_IN: Joi.string()
+      .pattern(/^[0-9]+[smhdw]$/)
+      .default('10m'),
+    JWT_REFRESH_SECRET: Joi.string().required().min(16).max(64),
     MONGODB_URI: Joi.string().required().uri(),
     SALT_LENGTH: Joi.number().integer().min(4).max(64).default(16),
   })
