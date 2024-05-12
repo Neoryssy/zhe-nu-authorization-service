@@ -27,7 +27,7 @@ export const envSchema = Joi.object()
     JWT_ACCESS_SECRET: Joi.string().required().min(16).max(64),
     JWT_REFRESH_EXPIRES_IN: Joi.string()
       .pattern(/^[0-9]+[smhdw]$/)
-      .default('10m'),
+      .default('90d'),
     JWT_REFRESH_SECRET: Joi.string().required().min(16).max(64),
     MONGODB_URI: Joi.string().required().uri(),
     SALT_LENGTH: Joi.number().integer().min(4).max(64).default(16),
